@@ -1,0 +1,27 @@
+pip install qrcode[pil]
+
+import qrcode
+#data = "https://pythonist.ru/"
+data = "jhfksh jh kfh ksjhdk g sdh gjkh sh khf docx"
+img = qrcode.make(data)
+img.save("qr.pdf",format='PDF',quality=200,size=50)
+
+!pip install PyPDF2
+import PyPDF2 as pypdf
+with open("DSP_2_Bonus.pdf", "rb") as inFile, open("site.pdf", "rb") as overlay:
+    original = pypdf.PdfFileReader(inFile)
+    background = original.getPage(0)
+    foreground = pypdf.PdfFileReader(overlay).getPage(0)
+
+    # merge the first two pages
+    background.mergePage(foreground)
+
+    # add all pages to a writer
+    writer = pypdf.PdfFileWriter()
+    for i in range(original.getNumPages()):
+        page = original.getPage(i)
+        writer.addPage(page)
+
+    # write everything in the writer to a file
+    with open("modified3.pdf", "wb") as outFile:
+        writer.write(outFile)
